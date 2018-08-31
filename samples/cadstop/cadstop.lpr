@@ -20,6 +20,8 @@ var
   del_up:InterceptionKeyStroke    = (code:SCANCODE_DEL;
                                      state:INTERCEPTION_KEY_UP or INTERCEPTION_KEY_E0;
                                      information: 0);
+  numdel_down:InterceptionKeyStroke=(code:SCANCODE_DEL;state:INTERCEPTION_KEY_DOWN;information:0);
+  numdel_up:InterceptionKeyStroke  =(code:SCANCODE_DEL;state:INTERCEPTION_KEY_UP;information:0);
 
 
 function KeyStrokesEqual(const first: InterceptionKeyStroke;
@@ -29,7 +31,8 @@ begin
 end;
 
 function shall_produce_keystroke(const kstroke: InterceptionKeyStroke): Boolean;
-const
+const // so called typed constant - it is like static variable in C eg. they can
+      // be assigned during run time and keeps its value between function invocations !!!!!
   ctrl_is_down: Integer = 0;
   alt_is_down: Integer = 0;
   del_is_down: Integer = 0;
@@ -43,6 +46,8 @@ begin
     if KeyStrokesEqual(kstroke, alt_up) then alt_is_down := 0;
     if KeyStrokesEqual(kstroke, del_down) then del_is_down := 1;
     if KeyStrokesEqual(kstroke, del_up) then del_is_down := 0;
+    if KeyStrokesEqual(kstroke, numdel_down) then del_is_down := 1;
+    if KeyStrokesEqual(kstroke, numdel_up) then del_is_down := 0;
     Result := True;
     Exit;
   end;
@@ -58,6 +63,10 @@ begin
                             or KeyStrokesEqual(kstroke, del_up)) then
     Exit;
 
+  if (del_is_down = 0) and (KeyStrokesEqual(kstroke, numdel_down)
+                            or KeyStrokesEqual(kstroke, numdel_up)) then
+    Exit;
+
   if KeyStrokesEqual(kstroke, ctrl_up) then
     ctrl_is_down := 0
   else
@@ -65,8 +74,10 @@ begin
       alt_is_down := 0
     else
       if KeyStrokesEqual(kstroke, del_up) then
+        del_is_down := 0
+      else
+        if KeyStrokesEqual(kstroke, numdel_up) then
         del_is_down := 0;
-
   Result := True;
 end;
 
