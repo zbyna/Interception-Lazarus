@@ -10,18 +10,16 @@ const
   SCANCODE_DEL  = $53;
 
 var
-  ctrl_down: InterceptionKeyStroke = (code: SCANCODE_CTRL;
-    state: INTERCEPTION_KEY_DOWN; information: 0);
-  alt_down: InterceptionKeyStroke = (code: SCANCODE_ALT;
-    state: INTERCEPTION_KEY_DOWN; information: 0);
-  del_down: InterceptionKeyStroke = (code: SCANCODE_DEL;
-    state: INTERCEPTION_KEY_DOWN or INTERCEPTION_KEY_E0; information: 0);
-  ctrl_up: InterceptionKeyStroke = (code: SCANCODE_CTRL;
-    state: INTERCEPTION_KEY_UP; information: 0);
-  alt_up: InterceptionKeyStroke = (code: SCANCODE_ALT;
-    state: INTERCEPTION_KEY_UP; information: 0);
-  del_up: InterceptionKeyStroke = (code: SCANCODE_DEL;
-    state: INTERCEPTION_KEY_UP or INTERCEPTION_KEY_E0; information: 0);
+  ctrl_down:InterceptionKeyStroke = (code:SCANCODE_CTRL;state:INTERCEPTION_KEY_DOWN;information:0);
+  alt_down:InterceptionKeyStroke  = (code:SCANCODE_ALT;state:INTERCEPTION_KEY_DOWN;information:0);
+  del_down:InterceptionKeyStroke  = (code:SCANCODE_DEL;
+                                     state:INTERCEPTION_KEY_DOWN or INTERCEPTION_KEY_E0;
+                                     information:0);
+  ctrl_up:InterceptionKeyStroke   = (code:SCANCODE_CTRL;state:INTERCEPTION_KEY_UP;information:0);
+  alt_up:InterceptionKeyStroke    = (code:SCANCODE_ALT;state:INTERCEPTION_KEY_UP;information: 0);
+  del_up:InterceptionKeyStroke    = (code:SCANCODE_DEL;
+                                     state:INTERCEPTION_KEY_UP or INTERCEPTION_KEY_E0;
+                                     information: 0);
 
 
 function KeyStrokesEqual(const first: InterceptionKeyStroke;
@@ -48,13 +46,16 @@ begin
     Result := True;
     Exit;
   end;
-  if (ctrl_is_down = 0) and (KeyStrokesEqual(kstroke, ctrl_down) or KeyStrokesEqual(kstroke, ctrl_up)) then
+  if (ctrl_is_down = 0)and(KeyStrokesEqual(kstroke,ctrl_down)
+                           or KeyStrokesEqual(kstroke, ctrl_up)) then
     Exit;
 
-  if (alt_is_down = 0) and (KeyStrokesEqual(kstroke, alt_down) or KeyStrokesEqual(kstroke, alt_up)) then
+  if (alt_is_down = 0)and(KeyStrokesEqual(kstroke,alt_down)
+                          or KeyStrokesEqual(kstroke, alt_up)) then
     Exit;
 
-  if (del_is_down = 0) and (KeyStrokesEqual(kstroke, del_down) or KeyStrokesEqual(kstroke, del_up)) then
+  if (del_is_down = 0) and (KeyStrokesEqual(kstroke, del_down)
+                            or KeyStrokesEqual(kstroke, del_up)) then
     Exit;
 
   if KeyStrokesEqual(kstroke, ctrl_up) then
